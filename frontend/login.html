@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineGold - Iniciar sesión</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="login" class="auth-page">
+  <div class="auth-card">
+    <h1>CineGold</h1>
+    <p class="sub">Plataforma de recomendación con SWI-Prolog</p>
+    <div id="login-alert" class="alert"></div>
+    <form id="login-form">
+      <div class="form-group">
+        <label for="username">Usuario</label>
+        <input type="text" id="username" name="username" required autocomplete="username" placeholder="ej: juan">
+      </div>
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-gold">Entrar</button>
+    </form>
+    <p class="auth-footer">¿No tienes cuenta? <a href="register.html">Regístrate</a></p>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

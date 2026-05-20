@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineGold - Registro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="register" class="auth-page">
+  <div class="auth-card">
+    <h1>Crear cuenta</h1>
+    <p class="sub">Registro simple (texto plano en archivo local)</p>
+    <div id="register-alert" class="alert"></div>
+    <form id="register-form">
+      <div class="form-group">
+        <label for="username">Usuario</label>
+        <input type="text" id="username" name="username" required placeholder="solo letras/números">
+      </div>
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <label for="confirm">Confirmar contraseña</label>
+        <input type="password" id="confirm" name="confirm" required>
+      </div>
+      <button type="submit" class="btn btn-gold">Registrarse</button>
+    </form>
+    <p class="auth-footer">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

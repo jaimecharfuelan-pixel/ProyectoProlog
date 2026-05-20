@@ -1,0 +1,30 @@
+{
+  "nota": "Catálogo de referencia. La app usa la API Prolog en tiempo real.",
+  "peliculas": [
+    { "id": "interstellar", "nombre": "Interstellar", "genero": "ciencia_ficcion", "popularidad": 97, "poster": "assets/posters/interstellar.jpg" },
+    { "id": "inception", "nombre": "Inception", "genero": "ciencia_ficcion", "popularidad": 94, "poster": "assets/posters/inception.jpg" },
+    { "id": "dark_knight", "nombre": "The Dark Knight", "genero": "accion", "popularidad": 98, "poster": "assets/posters/dark_knight.jpg" },
+    { "id": "john_wick", "nombre": "John Wick", "genero": "accion", "popularidad": 91, "poster": "assets/posters/john_wick.jpg" },
+    { "id": "mad_max", "nombre": "Mad Max: Fury Road", "genero": "accion", "popularidad": 90, "poster": "assets/posters/mad_max.jpg" },
+    { "id": "gladiator", "nombre": "Gladiator", "genero": "accion", "popularidad": 89, "poster": "assets/posters/gladiator.jpg" },
+    { "id": "alien", "nombre": "Alien", "genero": "terror", "popularidad": 88, "poster": "assets/posters/alien.jpg" },
+    { "id": "conjuro", "nombre": "El Conjuro", "genero": "terror", "popularidad": 87, "poster": "assets/posters/conjuro.jpg" },
+    { "id": "it", "nombre": "It", "genero": "terror", "popularidad": 86, "poster": "assets/posters/it.jpg" },
+    { "id": "destino_final", "nombre": "Destino Final", "genero": "terror", "popularidad": 82, "poster": "assets/posters/destino_final.jpg" },
+    { "id": "destino_conocernos", "nombre": "Destino a conocernos", "genero": "romance", "popularidad": 45, "poster": "assets/posters/destino_conocernos.jpg" },
+    { "id": "matrix", "nombre": "The Matrix", "genero": "ciencia_ficcion", "popularidad": 96, "poster": "assets/posters/matrix.jpg" },
+    { "id": "blade_runner", "nombre": "Blade Runner 2049", "genero": "ciencia_ficcion", "popularidad": 85, "poster": "assets/posters/blade_runner.jpg" },
+    { "id": "gravity", "nombre": "Gravity", "genero": "ciencia_ficcion", "popularidad": 84, "poster": "assets/posters/gravity.jpg" },
+    { "id": "martian", "nombre": "The Martian", "genero": "ciencia_ficcion", "popularidad": 88, "poster": "assets/posters/martian.jpg" },
+    { "id": "jurassic_park", "nombre": "Jurassic Park", "genero": "aventura", "popularidad": 93, "poster": "assets/posters/jurassic_park.jpg" },
+    { "id": "toy_story", "nombre": "Toy Story", "genero": "animacion", "popularidad": 92, "poster": "assets/posters/toy_story.jpg" },
+    { "id": "shrek", "nombre": "Shrek", "genero": "animacion", "popularidad": 90, "poster": "assets/posters/shrek.jpg" },
+    { "id": "superbad", "nombre": "Superbad", "genero": "comedia", "popularidad": 81, "poster": "assets/posters/superbad.jpg" },
+    { "id": "godfather", "nombre": "The Godfather", "genero": "drama", "popularidad": 99, "poster": "assets/posters/godfather.jpg" },
+    { "id": "pulp_fiction", "nombre": "Pulp Fiction", "genero": "drama", "popularidad": 95, "poster": "assets/posters/pulp_fiction.jpg" },
+    { "id": "forrest_gump", "nombre": "Forrest Gump", "genero": "drama", "popularidad": 92, "poster": "assets/posters/forrest_gump.jpg" },
+    { "id": "braveheart", "nombre": "Braveheart", "genero": "drama", "popularidad": 87, "poster": "assets/posters/braveheart.jpg" },
+    { "id": "titanic", "nombre": "Titanic", "genero": "romance", "popularidad": 96, "poster": "assets/posters/titanic.jpg" },
+    { "id": "parasite", "nombre": "Parasite", "genero": "drama", "popularidad": 93, "poster": "assets/posters/parasite.jpg" }
+  ]
+}
