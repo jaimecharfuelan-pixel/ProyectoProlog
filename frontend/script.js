@@ -1,8 +1,3 @@
-/**
- * CineGold - Cliente frontend
- * API SWI-Prolog: http://localhost:9000
- */
-
 const API_BASE = '';
 const STORAGE_SESSION = 'cinegold_session';
 const STORAGE_USER = 'cinegold_user';
@@ -50,10 +45,16 @@ async function apiFetch(path, options = {}) {
     ...(options.headers || {})
   };
   const sid = getSessionId();
-  if (sid) headers['X-Session-Id'] = sid;
+
+  let finalPath = path;
+  if (sid) {
+    headers['X-Session-Id'] = sid;
+    const sep = path.includes('?') ? '&' : '?';
+    finalPath = path + sep + 'sid=' + encodeURIComponent(sid);
+  }
 
   try {
-    const res = await fetch(`${API_BASE}${path}`, { ...options, headers });
+    const res = await fetch(`${API_BASE}${finalPath}`, { ...options, headers });
     return await res.json();
   } catch {
     return { ok: false, error: 'No se pudo conectar con el servidor Prolog (puerto 9000)' };
@@ -114,7 +115,7 @@ function initRegisterPage() {
     showAlert('register-alert', '');
 
     if (password !== confirm) {
-      showAlert('register-alert', 'Las contraseñas no coinciden', 'error');
+      showAlert('register-alert', 'Las contrasenas no coinciden', 'error');
       return;
     }
 
@@ -156,7 +157,7 @@ async function cargarPerfil() {
   const generos = data.perfil?.generos || [];
   if (generos.length === 0) {
     panel.innerHTML =
-      '<h4>Tus gustos (IA Prolog)</h4><p class="card-meta">Marca películas como vistas, like o favoritas para entrenar el sistema.</p>';
+      '<h4>Tus gustos</h4><p class="card-meta">Marca peliculas como vistas, like o favoritas para personalizar tus recomendaciones.</p>';
     return;
   }
 
@@ -164,7 +165,7 @@ async function cargarPerfil() {
     .map((g) => '<span class="genero-tag">' + g.label + ': <span>' + Math.round(g.score) + '</span> pts</span>')
     .join('');
 
-  panel.innerHTML = '<h4>Tus gustos learned (pesos por género)</h4><div class="genero-tags">' + tags + '</div>';
+  panel.innerHTML = '<h4>Preferencias por genero</h4><div class="genero-tags">' + tags + '</div>';
 }
 
 async function cargarSecciones() {
@@ -176,7 +177,7 @@ async function cargarSecciones() {
     const data = await apiGet('/api/seccion?tipo=' + sec.tipo);
 
     if (!data.ok || !data.peliculas?.length) {
-      row.innerHTML = '<p class="card-meta">Sin títulos por ahora.</p>';
+      row.innerHTML = '<p class="card-meta">Sin titulos por ahora.</p>';
       continue;
     }
 
@@ -207,17 +208,16 @@ async function ejecutarBusqueda(query) {
   mainSections?.classList.add('hidden');
   section.classList.remove('hidden');
   section.innerHTML =
-    '<h3 style="padding:0 2rem;color:var(--gold-light)">Resultados de búsqueda</h3>' +
+    '<h3 style="padding:0 2rem;color:var(--gold-light)">Resultados de busqueda</h3>' +
     '<div class="row-scroll" id="search-row"><p class="card-meta">Buscando...</p></div>';
 
   const row = document.getElementById('search-row');
   if (!row) return;
 
-  // CORRECCIÓN: Llamada real a la API de búsqueda ponderada en Prolog
   const data = await apiGet('/api/buscar?q=' + encodeURIComponent(query));
 
   if (!data.ok || !data.peliculas?.length) {
-    row.innerHTML = '<p class="empty-msg">No se encontraron películas.</p>';
+    row.innerHTML = '<p class="empty-msg">No se encontraron peliculas.</p>';
     return;
   }
 
@@ -242,9 +242,9 @@ function crearCard(pelicula) {
     posterInner = '<div class="poster-placeholder">' + inicial + '</div>';
   }
 
-  const likeCls = pelicula.like ? 'active' : '';
-  const favCls = pelicula.favorita ? 'active' : '';
-  const disCls = pelicula.dislike ? 'active' : '';
+  const likeCls  = pelicula.like     ? 'active' : '';
+  const favCls   = pelicula.favorita ? 'active' : '';
+  const disCls   = pelicula.dislike  ? 'active' : '';
 
   card.innerHTML =
     '<div class="poster-wrap">' +
@@ -256,19 +256,17 @@ function crearCard(pelicula) {
       '<h4>' + escapeHtml(pelicula.nombre) + '</h4>' +
       '<p class="card-meta">' + escapeHtml(pelicula.genero_label) + ' · ' + escapeHtml(pelicula.duracion_label) + '</p>' +
       '<div class="card-actions">' +
-        '<button type="button" class="btn btn-sm btn-ver" data-action="visto">▶ Ver</button>' +
-        '<button type="button" class="btn btn-sm btn-outline btn-like ' + likeCls + '" data-action="like">👍 Like</button>' +
-        '<button type="button" class="btn btn-sm btn-outline btn-fav ' + favCls + '" data-action="favorita">❤ Favorita</button>' +
-        '<button type="button" class="btn btn-sm btn-outline btn-dislike ' + disCls + '" data-action="dislike">👎 No</button>' +
+        '<button type="button" class="btn btn-sm btn-ver"     data-action="visto">Ver</button>' +
+        '<button type="button" class="btn btn-sm btn-outline btn-like '    + likeCls + '" data-action="like">Me gusta</button>' +
+        '<button type="button" class="btn btn-sm btn-outline btn-fav '     + favCls  + '" data-action="favorita">Favorita</button>' +
+        '<button type="button" class="btn btn-sm btn-outline btn-dislike ' + disCls  + '" data-action="dislike">No me gusta</button>' +
       '</div>' +
     '</div>';
 
   card.querySelectorAll('[data-action]').forEach((btn) => {
     btn.addEventListener('click', async () => {
       const action = btn.dataset.action;
-      if (action === 'visto') {
-        mostrarModalVer(pelicula);
-      }
+      if (action === 'visto') mostrarModalVer(pelicula);
       await registrarInteraccion(pelicula.id, action, card, btn);
     });
   });
@@ -286,7 +284,7 @@ async function registrarInteraccion(peliculaId, tipo, card, btn) {
   const data = await apiPost('/api/interaccion', { pelicula: peliculaId, tipo });
 
   if (!data.ok) {
-    alert(data.error || 'Error al guardar interacción');
+    alert(data.error || 'Error al guardar interaccion');
     return;
   }
 
@@ -319,7 +317,7 @@ function closeModal() {
 
 document.addEventListener('DOMContentLoaded', () => {
   const page = document.body.dataset.page;
-  if (page === 'login') initLoginPage();
+  if (page === 'login')    initLoginPage();
   else if (page === 'register') initRegisterPage();
-  else if (page === 'home') initHomePage();
+  else if (page === 'home')     initHomePage();
 });

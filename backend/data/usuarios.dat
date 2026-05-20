@@ -1,1 +1,9 @@
-usuario('123','123').
+usuario(jaime,jaime).
+interaccion(jaime,visto,dark_knight).
+interaccion(jaime,visto,mad_max).
+interaccion(jaime,visto,gladiator).
+interaccion(jaime,visto,alien).
+interaccion(jaime,visto,conjuro).
+interaccion(jaime,visto,it).
+interaccion(jaime,visto,destino_final).
+interaccion(jaime,visto,inception).

@@ -27,15 +27,13 @@ puerto(9000).
 :- http_handler(root('api/login'),       api_login,       [method(post)]).
 :- http_handler(root('api/logout'),      api_logout,      [method(post)]).
 :- http_handler(root('api/interaccion'), api_interaccion, [method(post)]).
-:- http_handler(root('api/peliculas'),       api_peliculas,       [method(get)]).
-:- http_handler(root('api/buscar'),          api_buscar,          [method(get)]).
+:- http_handler(root('api/peliculas'),   api_peliculas,   [method(get)]).
+:- http_handler(root('api/buscar'),      api_buscar,      [method(get)]).
 :- http_handler(root('api/recomendaciones'), api_recomendaciones, [method(get)]).
-:- http_handler(root('api/seccion'),         api_seccion,         [method(get)]).
-:- http_handler(root('api/perfil'),          api_perfil,          [method(get)]).
-:- http_handler(root('api/health'),          api_health,          [method(get)]).
-%% ============================================================
-%% CORS preflight
-%% ============================================================
+:- http_handler(root('api/seccion'),     api_seccion,     [method(get)]).
+:- http_handler(root('api/perfil'),      api_perfil,      [method(get)]).
+:- http_handler(root('api/health'),      api_health,      [method(get)]).
+
 cors_preflight_handler(_Request) :-
     format("Access-Control-Allow-Origin: *\r\n"),
     format("Access-Control-Allow-Methods: GET, POST, OPTIONS\r\n"),
@@ -43,9 +41,6 @@ cors_preflight_handler(_Request) :-
     format("Content-Length: 0\r\n"),
     format("~n").
 
-%% ============================================================
-%% Helpers
-%% ============================================================
 request_method(Request, Method) :-
     memberchk(method(Method), Request).
 
@@ -60,11 +55,9 @@ reply_method_not_allowed :-
     cors_enable,
     reply_json_dict(_{ok: false, error: 'Metodo no permitido'}, [status(405)]).
 
-%% ============================================================
-%% Arranque
-%% ============================================================
 start :-
     cargar_usuarios,
+    cargar_sesiones,
     puerto(P),
     http_server(http_dispatch, [port(P)]),
     format('~n========================================~n'),
@@ -81,9 +74,6 @@ server_loop :-
     ;   server_loop
     ).
 
-%% ============================================================
-%% API endpoints
-%% ============================================================
 api_health(_Request) :-
     reply_json_cors(_{ok: true, servicio: 'CineGold Prolog API'}).
 
@@ -189,11 +179,12 @@ api_perfil(Request) :-
     ;   reply_json_cors(_{ok: false, error: 'Sesion invalida'}, [status(401)])
     ).
 
-%% ============================================================
-%% Auxiliares sesion
-%% ============================================================
 session_id(Request, Sid) :-
-    (   memberchk(x_session_id(Sid), Request)
+    (   http_parameters(Request, [sid(Sid, [default('')])]),
+        Sid \= ''
+    ->  true
+    ;   memberchk(x_session_id(Sid), Request),
+        Sid \= ''
     ->  true
     ;   Sid = ''
     ).
@@ -206,9 +197,6 @@ session_user(Request, User) :-
     ;   User = none
     ).
 
-%% ============================================================
-%% Mapeo JSON peliculas
-%% ============================================================
 peliculas_a_json([], _, []).
 peliculas_a_json([Id|Rest], User, [J|Js]) :-
     pelicula_a_json(Id, User, J),
